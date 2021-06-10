@@ -41,8 +41,8 @@ function App() {
   };
 
   const handleAmount = e => {
-    setAmount(e.target.value)
- 
+  let tempAmount= e.target.value;
+  setAmount(tempAmount)
   };
 
   const handleAlert=({type,text})=>{
@@ -85,6 +85,8 @@ function App() {
 
   const clearItems=()=>{
     setExpenses([]);
+    handleAlert({type:"danger", text:"Cleared All item"})
+
     console.log("cleared all items");
   };
   const handleDelete = id =>{
@@ -132,6 +134,7 @@ function App() {
    <h1>
      total spending : 
      <span className="total">
+      
        $ {expenses.reduce((acc,curr)=>{
          return (acc+=parseInt(curr.amount));
 

@@ -24,7 +24,9 @@ export const ExpenseForm = ({charge, amount, handleCharge, handleAmount, handleS
                 name="amount"
                 placeholder="e.g. 200"
                 value={amount}
-                onChange={handleAmount}/>
+                onChange={handleAmount}
+                />
+                
                
             </div>
 
