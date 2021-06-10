@@ -63,7 +63,7 @@ function App() {
   };
 
   const idIncrement = (id) => {
-    setID(id + 1);
+    // setID(id + 1);
     return id + 1;
   };
 
@@ -115,7 +115,7 @@ function App() {
     setCharge(charge);
     setAmount(amount);
     setEdit(true);
-    // setID(id);
+    setID(id);
     // console.log(expense);
   };
 
