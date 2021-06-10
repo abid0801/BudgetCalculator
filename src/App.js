@@ -16,10 +16,15 @@ import React, { useState, useEffect } from "react";
 // ];
 const initialExpenses = localStorage.getItem('expenses') ? JSON.parse(localStorage.getItem("expenses")) : [];
 
-// const uniqueID = localStorage.getItem('uID')? JSON.parse(localStorage.getItem("uID")): [];
 
 function App() {
+  const checkExpenses = (expenseArr) => {
+    if (expenseArr.length === 0) {
+      return 0;
+    }
 
+    return expenseArr[expenseArr.length - 1].id;
+  };
 
   const [expenses, setExpenses] = useState(initialExpenses);
   const [charge, setCharge] = useState("");
@@ -27,15 +32,17 @@ function App() {
   const [alert, setAlert] = useState({ show: false });
   const [edit, setEdit] = useState(false);
   const [id, setID] = useState(0);
+  const [lastID, setLastID] = useState(0);
 
   useEffect(() => {
-    console.log("called");
+    localStorage.setItem("lastID", lastID);
+  }, [lastID]);
+
+  useEffect(() => {
+    setLastID(checkExpenses(expenses));
     localStorage.setItem("expenses", JSON.stringify(expenses));
   }, [expenses]);
 
-  // useEffect(() =>{
-  //   localStorage.setItem("uID", JSON.stringify(id));
-  // }, [id]);
 
   const handleCharge = e => {
     setCharge(e.target.value);
@@ -54,6 +61,7 @@ function App() {
     }, 7000);
 
   };
+
   const idIncrement = (id) => {
     setID(id + 1);
     return id + 1;
@@ -62,7 +70,7 @@ function App() {
 
   const handleSubmit = e => {
     e.preventDefault();
-    console.log(id, charge, amount);
+    // console.log(id, charge, amount);
     if (charge !== '' && amount > 0) {
       if (edit) {
         let tempExpenses = expenses.map(item => {
@@ -74,7 +82,7 @@ function App() {
         setEdit(false);
       }
       else {
-        const singleExpense = { id: idIncrement(id), charge, amount };
+        const singleExpense = { id: idIncrement(lastID), charge, amount };
         setExpenses([...expenses, singleExpense]);
         handleAlert({ type: "success", text: "Item Added" });
       }
@@ -92,12 +100,12 @@ function App() {
     setExpenses([]);
     handleAlert({ type: "danger", text: "Cleared All item" });
 
-    console.log("cleared all items");
+    // console.log("cleared all items");
   };
   const handleDelete = id => {
-    console.log(`item deleted: ${id}`);
+    // console.log(`item deleted: ${id}`);
     let tempExpenses = expenses.filter(item => item.id !== id);
-    console.log(tempExpenses);
+    // console.log(tempExpenses);
     setExpenses(tempExpenses);
     handleAlert({ type: "danger", text: "item deleted" });
   };
@@ -107,9 +115,8 @@ function App() {
     setCharge(charge);
     setAmount(amount);
     setEdit(true);
-    setID(id);
-    console.log(expense);
-
+    // setID(id);
+    // console.log(expense);
   };
 
 
