@@ -3,7 +3,7 @@ import './App.css';
 import ExpenseList from "./components/ExpenseList";
 import ExpenseForm from "./components/ExpenseForm";
 import Alert from "./components/Alert";
-import { v4 as uuidv4 } from 'uuid';
+
 import React, {useState,useEffect} from "react";
 
 
@@ -16,9 +16,7 @@ import React, {useState,useEffect} from "react";
 // ];
 const initialExpenses = localStorage.getItem('expenses')? JSON.parse(localStorage.getItem("expenses")): [];
 
-
-
-
+// const uniqueID = localStorage.getItem('uID')? JSON.parse(localStorage.getItem("uID")): [];
 
 function App() {
 
@@ -34,6 +32,10 @@ function App() {
     console.log("called");
     localStorage.setItem("expenses", JSON.stringify(expenses));
   }, [expenses]);
+
+  // useEffect(() =>{
+  //   localStorage.setItem("uID", JSON.stringify(id));
+  // }, [id]);
 
   const handleCharge = e => {
     setCharge(e.target.value)
@@ -52,11 +54,15 @@ function App() {
     },7000)
 
   };
+  const idIncrement = (id) => {
+    setID(id + 1);
+    return id + 1;
+  };
 
 
   const handleSubmit = e => {
     e.preventDefault();
-    console.log(charge,amount);
+    console.log(id,charge,amount);
     if(charge !== '' && amount > 0){
     if(edit)
     {
@@ -69,11 +75,11 @@ function App() {
       setEdit(false);
     }
     else{
-      const singleExpense={id:uuidv4(), charge, amount}
+      const singleExpense={id:idIncrement(id), charge, amount}
       setExpenses([...expenses, singleExpense]);
       handleAlert({type:"success", text:"Item Added"})
     }
-    
+      
       setCharge("");
       setAmount("");
     }
